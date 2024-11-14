@@ -1,0 +1,38 @@
+.cell {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #ccc;
+  }
+  
+  .cell.unselected {
+    background-color: #ccc;
+  }
+  
+  .cell.flag {
+    background-color: #ffc107;
+    cursor: pointer;
+  }
+  
+  .cell-mine {
+    background-color: red;
+    color: white;
+  }
+  
+  .cell-safe-easy {
+    background-color: #88cc88; 
+  }
+  
+  .cell-safe-medium {
+    background-color: #5ca05c; 
+  }
+  
+  .cell-safe-hard {
+    background-color: #3e6b3e; 
+  }
+  

@@ -1,0 +1,40 @@
+.game-container {
+    text-align: center;
+    padding: 20px;
+    color: #444;
+  }
+  
+  .game-difficulty {
+    font-size: 24px;
+    color: #007bff;
+    margin-bottom: 10px;
+  }
+  
+  .game-intro {
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 15px;
+  }
+  
+  .game-message {
+    font-size: 20px;
+    margin-top: 20px;
+    color: #ff0000;
+    font-weight: bold;
+  }
+  
+  .game-reset-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin: 10px;
+  }
+  
+  .game-reset-button:hover {
+    background-color: #0056b3;
+  }
+  

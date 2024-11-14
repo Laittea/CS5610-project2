@@ -4,7 +4,6 @@ import Home from './pages/Home';
 import Rules from './pages/Rules';
 import Game from './pages/Game';
 import Header from './components/Header';
-import Footer from './components/Footer';
 import './App.css';
 
 function App() {
@@ -16,7 +15,6 @@ function App() {
         <Route path="/rules" element={<Rules />} />
         <Route path="/game/:difficulty" element={<Game />} />
       </Routes>
-      <Footer />
     </Router>
   );
 }

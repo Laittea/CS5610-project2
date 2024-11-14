@@ -6,7 +6,6 @@ const Cell = ({ isMine, nearbyMines, revealed, onReveal, setFlagCount }) => {
   const { gameState, setGameState } = useContext(GameContext);
 
   const handleClick = (event) => {
-    // Prevent interaction if the game is over
     if (gameState !== 'playing') return;
 
     if (event.shiftKey || event.type === 'contextmenu') {
@@ -15,10 +14,10 @@ const Cell = ({ isMine, nearbyMines, revealed, onReveal, setFlagCount }) => {
     } else if (state === 'unselected') {
       if (isMine) {
         setState('mine');
-        setGameState('lost'); // End the game
+        setGameState('lost'); 
       } else {
         setState('safe');
-        onReveal(); // Notify parent that a cell is revealed
+        onReveal(); 
       }
     }
   };
@@ -26,10 +25,10 @@ const Cell = ({ isMine, nearbyMines, revealed, onReveal, setFlagCount }) => {
   const toggleFlag = () => {
     if (state === 'flag') {
       setState('unselected');
-      setFlagCount((prev) => prev - 1); // Decrement flag count
+      setFlagCount((prev) => prev - 1); 
     } else if (state === 'unselected') {
       setState('flag');
-      setFlagCount((prev) => prev + 1); // Increment flag count
+      setFlagCount((prev) => prev + 1); 
     }
   };
 

@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Cell from './Cell';
 import { GameContext } from '../context/GameContext';
+import './Grid.css';
 
 const Grid = ({ gridSize, setFlagCount }) => {
   const { rows, cols, mines } = gridSize;
   const { setGameState } = useContext(GameContext);
   const [grid, setGrid] = useState([]);
-  const [revealedCount, setRevealedCount] = useState(0); // Track revealed cells
+  const [revealedCount, setRevealedCount] = useState(0);
 
   useEffect(() => {
-    // Initialize grid with mines
     const newGrid = Array.from({ length: rows }, () =>
       Array.from({ length: cols }, () => ({
         isMine: false,
@@ -18,7 +18,6 @@ const Grid = ({ gridSize, setFlagCount }) => {
       }))
     );
 
-    // Randomly place mines
     let placedMines = 0;
     while (placedMines < mines) {
       const row = Math.floor(Math.random() * rows);
@@ -29,11 +28,10 @@ const Grid = ({ gridSize, setFlagCount }) => {
       }
     }
 
-    // Calculate nearby mines for each cell
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < cols; c++) {
         if (!newGrid[r][c].isMine) {
-          newGrid[r][c].nearbyMines = calculateNearbyMines(newGrid, r, c, rows, cols);
+          newGrid[r][c].nearbyMines = calculateNearbyMines(newGrid, r, c);
         }
       }
     }
@@ -41,21 +39,11 @@ const Grid = ({ gridSize, setFlagCount }) => {
     setGrid(newGrid);
   }, [rows, cols, mines]);
 
-  useEffect(() => {
-    // Check if all non-mine cells are revealed
-    const totalCells = rows * cols;
-    const nonMineCells = totalCells - mines;
-
-    if (revealedCount === nonMineCells) {
-      setGameState('won');
-    }
-  }, [revealedCount, rows, cols, mines, setGameState]);
-
   const calculateNearbyMines = (grid, row, col) => {
     const directions = [
       [-1, -1], [-1, 0], [-1, 1],
       [0, -1],          [0, 1],
-      [1, -1], [1, 0], [1, 1]
+      [1, -1], [1, 0], [1, 1],
     ];
 
     let count = 0;
@@ -76,26 +64,10 @@ const Grid = ({ gridSize, setFlagCount }) => {
     return count;
   };
 
-  const handleReveal = (row, col) => {
-    const cell = grid[row][col];
-    if (cell.isMine) {
-      setGameState('lost');
-    } else {
-      cell.revealed = true;
-      setRevealedCount((prev) => prev + 1);
-      setGrid([...grid]); // Trigger re-render
-    }
-  };
-
   return (
     <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: `repeat(${cols}, 30px)`,
-        gap: '2px',
-        justifyContent: 'center',
-        marginTop: '20px',
-      }}
+      className="grid"
+      style={{ gridTemplateColumns: `repeat(${cols}, 30px)` }}
     >
       {grid.map((row, rowIndex) =>
         row.map((cell, colIndex) => (
@@ -114,4 +86,5 @@ const Grid = ({ gridSize, setFlagCount }) => {
 };
 
 export default Grid;
+
 
