@@ -11,7 +11,11 @@ const Grid = ({ gridSize, setFlagCount }) => {
   useEffect(() => {
     // Initialize grid with mines
     const newGrid = Array.from({ length: rows }, () =>
-      Array.from({ length: cols }, () => ({ isMine: false, nearbyMines: 0, revealed: false }))
+      Array.from({ length: cols }, () => ({
+        isMine: false,
+        nearbyMines: 0,
+        revealed: false,
+      }))
     );
 
     // Randomly place mines
@@ -47,7 +51,7 @@ const Grid = ({ gridSize, setFlagCount }) => {
     }
   }, [revealedCount, rows, cols, mines, setGameState]);
 
-  const calculateNearbyMines = (grid, row, col, rows, cols) => {
+  const calculateNearbyMines = (grid, row, col) => {
     const directions = [
       [-1, -1], [-1, 0], [-1, 1],
       [0, -1],          [0, 1],
@@ -58,7 +62,13 @@ const Grid = ({ gridSize, setFlagCount }) => {
     directions.forEach(([dx, dy]) => {
       const newRow = row + dx;
       const newCol = col + dy;
-      if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols && grid[newRow][newCol].isMine) {
+      if (
+        newRow >= 0 &&
+        newRow < rows &&
+        newCol >= 0 &&
+        newCol < cols &&
+        grid[newRow][newCol].isMine
+      ) {
         count++;
       }
     });
@@ -66,8 +76,15 @@ const Grid = ({ gridSize, setFlagCount }) => {
     return count;
   };
 
-  const handleReveal = () => {
-    setRevealedCount((prev) => prev + 1);
+  const handleReveal = (row, col) => {
+    const cell = grid[row][col];
+    if (cell.isMine) {
+      setGameState('lost');
+    } else {
+      cell.revealed = true;
+      setRevealedCount((prev) => prev + 1);
+      setGrid([...grid]); // Trigger re-render
+    }
   };
 
   return (
@@ -80,18 +97,21 @@ const Grid = ({ gridSize, setFlagCount }) => {
         marginTop: '20px',
       }}
     >
-      {grid.flat().map((cell, index) => (
-        <Cell
-          key={index}
-          isMine={cell.isMine}
-          nearbyMines={cell.nearbyMines}
-          revealed={cell.revealed}
-          onReveal={handleReveal}
-          setFlagCount={setFlagCount} // Pass setFlagCount to Cell
-        />
-      ))}
+      {grid.map((row, rowIndex) =>
+        row.map((cell, colIndex) => (
+          <Cell
+            key={`${rowIndex}-${colIndex}`}
+            isMine={cell.isMine}
+            nearbyMines={cell.nearbyMines}
+            revealed={cell.revealed}
+            onReveal={() => handleReveal(rowIndex, colIndex)}
+            setFlagCount={setFlagCount}
+          />
+        ))
+      )}
     </div>
   );
 };
 
 export default Grid;
+
