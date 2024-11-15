@@ -5,12 +5,14 @@ import { GameContext } from '../context/GameContext';
 import './Game.css';
 
 const Game = () => {
+    // Get difficulty level from URL
   const { difficulty } = useParams();
   const { gameState, setGameState } = useContext(GameContext);
   const [gridSize, setGridSize] = useState({ rows: 8, cols: 8, mines: 10 });
   const [key, setKey] = useState(0);
-
+    //This was inspired by some React game tutorials
   useEffect(() => {
+    // Update grid size based on difficulty
     switch (difficulty) {
       case 'medium':
         setGridSize({ rows: 16, cols: 16, mines: 40 });
@@ -24,10 +26,12 @@ const Game = () => {
 
 
     setGameState('playing');
+    // Update the key to reset the grid component
     setKey((prevKey) => prevKey + 1);
+    // Re-run when difficulty changes
   }, [difficulty, setGameState]);
-
-
+  // This is also from some React tutorial
+  // Emoji and text customization for each difficulty
   const getDifficultyDetails = () => {
     switch (difficulty) {
       case 'medium':
